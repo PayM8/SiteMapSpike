@@ -1,0 +1,15 @@
+﻿@model Product
+
+
+<div class="row">
+    <div class="col-xs-3">
+       @Html.LabelFor(model => model.ProductDescripion): @Model.ProductDescripion
+    </div>
+    <div class="col-xs-3">
+       @Html.LabelFor(model => model.Price): @Model.Price
+    </div>
+    <div class="col-xs-3">
+      @Html.LabelFor(model => model.WarehouseId): @Model.WarehouseId
+    </div>
+
+</div>

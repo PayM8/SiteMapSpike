@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Home" controller="Home" action="Index">
+    <mvcSiteMapNode title="Warehouses" controller="Warehouse" action="Index">
+      <mvcSiteMapNode title="Warehouse" controller="Warehouse" action="Detail" preservedRouteParameters="WarehouseId">
+        <mvcSiteMapNode title="Products" controller="Products" action="Index" preservedRouteParameters="WarehouseId">
+          <mvcSiteMapNode title="Product" controller="Products" action="Detail" preservedRouteParameters="WarehouseId,productId"/>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>

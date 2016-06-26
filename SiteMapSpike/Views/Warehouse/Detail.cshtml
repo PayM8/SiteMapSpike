@@ -1,0 +1,19 @@
+﻿@model Warehouse
+@{
+    ViewBag.Title = "Detail";
+}
+
+<div class="row">
+    <div class="col-xs-3">
+        @Model.Name
+    </div>
+    <div class="col-xs-3">
+        @Model.Location
+    </div>
+    <div class="col-xs-3">
+        @Html.ActionLink("Products","Index","Products", new { @warehouseId = Model.WarehouseId },null)
+    </div>
+    <div class="col-xs-3">
+        @Html.ActionLink("Back", "Index")
+    </div>
+</div>

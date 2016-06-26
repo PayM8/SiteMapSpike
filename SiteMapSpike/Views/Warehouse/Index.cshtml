@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Warehouse>
+
+@foreach (var warehouse in Model)
+{
+    <div class="row">
+        <div class="col-xs-6">
+            @Html.ActionLink(warehouse.Name, "Detail", new { @WarehouseId = warehouse.WarehouseId })
+        </div>
+        <div class="col-xs-6">
+            @warehouse.Location
+        </div>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Product>
+
+<div class="row">
+    <div class="col-xs-4">
+        Name
+    </div>
+    <div class="col-xs-4">
+        Name
+    </div>
+    <div class="col-xs-4">
+        Price
+    </div>
+</div>
+@foreach (var product in Model)
+{
+
+    <div class="row">
+
+        <div class="col-xs-4">
+            @Html.ActionLink(product.ProductDescripion + " [From warehouse " + product.WarehouseId+"] ", "Detail", new { @productId = product.ProductId, @warehouseId = product.WarehouseId })
+        </div>
+        <div class="col-xs-4">
+            @product.ProductDescripion
+        </div>
+        <div class="col-xs-4">
+            @product.Price
+        </div>
+    </div>
+}
