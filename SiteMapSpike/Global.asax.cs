@@ -28,6 +28,7 @@ namespace SiteMapSpike
             SiteMaps.Loader = container.Resolve<ISiteMapLoader>();
             var validator = container.Resolve<ISiteMapXmlValidator>();
             validator.ValidateXml(HostingEnvironment.MapPath("~/Mvc.sitemap"));
+          
         }
     }
 }

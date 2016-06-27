@@ -13,6 +13,7 @@ using MvcSiteMapProvider.Web.Compilation;
 using MvcSiteMapProvider.Web.Mvc;
 using MvcSiteMapProvider.Web.UrlResolver;
 using MvcSiteMapProvider.Xml;
+using System.Linq;
 
 namespace SiteMapSpike.DI.Unity.ContainerExtensions
 {
@@ -59,8 +60,8 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
                 typeof(IDynamicNodeProvider)
             };
 
-// Matching type name (I[TypeName] = [TypeName]) or matching type name + suffix Adapter (I[TypeName] = [TypeName]Adapter)
-// and not decorated with the [ExcludeFromAutoRegistrationAttribute].
+            // Matching type name (I[TypeName] = [TypeName]) or matching type name + suffix Adapter (I[TypeName] = [TypeName]Adapter)
+            // and not decorated with the [ExcludeFromAutoRegistrationAttribute].
             CommonConventions.RegisterDefaultConventions(
                 (interfaceType, implementationType) => this.Container.RegisterType(interfaceType, implementationType, new ContainerControlledLifetimeManager()),
                 new Assembly[] { siteMapProviderAssembly },
@@ -68,7 +69,7 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
                 excludeTypes,
                 string.Empty);
 
-// Multiple implementations of strategy based extension points (and not decorated with [ExcludeFromAutoRegistrationAttribute]).
+            // Multiple implementations of strategy based extension points (and not decorated with [ExcludeFromAutoRegistrationAttribute]).
             CommonConventions.RegisterAllImplementationsOfInterface(
                 (interfaceType, implementationType) => this.Container.RegisterType(interfaceType, implementationType, implementationType.Name, new ContainerControlledLifetimeManager()),
                 multipleImplementationTypes,
@@ -76,23 +77,28 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
                 excludeTypes,
                 string.Empty);
 
-// Url Resolvers
+            // Url Resolvers
             this.Container.RegisterType<ISiteMapNodeUrlResolverStrategy, SiteMapNodeUrlResolverStrategy>(new InjectionConstructor(
                 new ResolvedParameter<ISiteMapNodeUrlResolver[]>()
                 ));
 
-// Visibility Providers
+
+            //Visibility Providers
             this.Container.RegisterType<ISiteMapNodeVisibilityProviderStrategy, SiteMapNodeVisibilityProviderStrategy>(new InjectionConstructor(
                 new ResolvedParameter<ISiteMapNodeVisibilityProvider[]>(), new InjectionParameter<string>(string.Empty)
                 ));
 
-// Dynamic Node Providers
+            //            this.Container.RegisterType<ISiteMapNodeVisibilityProviderStrategy, SiteMapNodeVisibilityProviderStrategy>(new InjectionConstructor(
+            //    new ResolvedArrayParameter<ISiteMapNodeVisibilityProvider>(this.Container.ResolveAll<ISiteMapNodeVisibilityProvider>().ToArray()),
+            //    new InjectionParameter<string>("SiteMapSpike.Extensions.NodeVisibilityProvider, SiteMapSpike")
+            //));
+            // Dynamic Node Providers
             this.Container.RegisterType<IDynamicNodeProviderStrategy, DynamicNodeProviderStrategy>(new InjectionConstructor(
                 new ResolvedParameter<IDynamicNodeProvider[]>()
                 ));
 
 
-// Pass in the global controllerBuilder reference
+            // Pass in the global controllerBuilder reference
             this.Container.RegisterInstance<ControllerBuilder>(ControllerBuilder.Current);
 
             this.Container.RegisterType<IControllerTypeResolverFactory, ControllerTypeResolverFactory>(new InjectionConstructor(
@@ -100,9 +106,9 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
                 new ResolvedParameter<IControllerBuilder>(),
                 new ResolvedParameter<IBuildManager>()));
 
-// Configure Security
+            // Configure Security
 
-// IMPORTANT: Must give arrays of object a name in Unity in order for it to resolve them.
+            // IMPORTANT: Must give arrays of object a name in Unity in order for it to resolve them.
             this.Container.RegisterType<IAclModule, AuthorizeAttributeAclModule>("authorizeAttribute");
             this.Container.RegisterType<IAclModule, XmlRolesAclModule>("xmlRoles");
             this.Container.RegisterType<IAclModule, CompositeAclModule>(new InjectionConstructor(
@@ -122,15 +128,15 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
             this.Container.RegisterType<ICacheDetails, CacheDetails>("cacheDetails",
                 new InjectionConstructor(absoluteCacheExpiration, TimeSpan.MinValue, new ResolvedParameter<ICacheDependency>("cacheDependency")));
 
-// Configure the visitors
+            // Configure the visitors
             this.Container.RegisterType<ISiteMapNodeVisitor, UrlResolvingSiteMapNodeVisitor>();
 
-// Prepare for the sitemap node providers
+            // Prepare for the sitemap node providers
             this.Container.RegisterType<IXmlSource, FileXmlSource>("file1XmlSource", new InjectionConstructor(new InjectionParameter<string>(absoluteFileName)));
             this.Container.RegisterType<IReservedAttributeNameProvider, ReservedAttributeNameProvider>(new InjectionConstructor(new List<string>()));
 
-// IMPORTANT: Must give arrays of object a name in Unity in order for it to resolve them.
-// Register the sitemap node providers
+            // IMPORTANT: Must give arrays of object a name in Unity in order for it to resolve them.
+            // Register the sitemap node providers
             this.Container.RegisterType<ISiteMapNodeProvider>(
                 "xmlSiteMapNodeProvider1",
                 new ContainerControlledLifetimeManager(),
@@ -150,10 +156,10 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
                 new ResolvedParameter<ISiteMapNodeProvider>("xmlSiteMapNodeProvider1"),
                 new ResolvedParameter<ISiteMapNodeProvider>("reflectionSiteMapNodeProvider1"))));
 
-// Configure the builders
+            // Configure the builders
             this.Container.RegisterType<ISiteMapBuilder, SiteMapBuilder>();
 
-// Configure the builder sets
+            // Configure the builder sets
             this.Container.RegisterType<ISiteMapBuilderSet, SiteMapBuilderSet>("builderSet1",
                 new InjectionConstructor(
                     "default",
