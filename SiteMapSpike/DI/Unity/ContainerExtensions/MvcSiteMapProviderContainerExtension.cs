@@ -84,14 +84,11 @@ namespace SiteMapSpike.DI.Unity.ContainerExtensions
 
 
             //Visibility Providers
-            this.Container.RegisterType<ISiteMapNodeVisibilityProviderStrategy, SiteMapNodeVisibilityProviderStrategy>(new InjectionConstructor(
-                new ResolvedParameter<ISiteMapNodeVisibilityProvider[]>(), new InjectionParameter<string>(string.Empty)
-                ));
 
-            //            this.Container.RegisterType<ISiteMapNodeVisibilityProviderStrategy, SiteMapNodeVisibilityProviderStrategy>(new InjectionConstructor(
-            //    new ResolvedArrayParameter<ISiteMapNodeVisibilityProvider>(this.Container.ResolveAll<ISiteMapNodeVisibilityProvider>().ToArray()),
-            //    new InjectionParameter<string>("SiteMapSpike.Extensions.NodeVisibilityProvider, SiteMapSpike")
-            //));
+            this.Container.RegisterType<ISiteMapNodeVisibilityProviderStrategy, SiteMapNodeVisibilityProviderStrategy>(new InjectionConstructor(
+    new ResolvedArrayParameter<ISiteMapNodeVisibilityProvider>(this.Container.ResolveAll<ISiteMapNodeVisibilityProvider>().ToArray()),
+    new InjectionParameter<string>("SiteMapSpike.Extensions.NodeVisibilityProvider, SiteMapSpike")
+));
             // Dynamic Node Providers
             this.Container.RegisterType<IDynamicNodeProviderStrategy, DynamicNodeProviderStrategy>(new InjectionConstructor(
                 new ResolvedParameter<IDynamicNodeProvider[]>()
